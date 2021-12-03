@@ -1,13 +1,12 @@
-CC_HIPCC=hipcc
+CC_NVCC=hipcc -x cu
+CC_AMD=hipcc
 CC=$(CC_$(COMPILER))
 
-ifneq ($(COMPILER), HIPCC)
-	$(error Only HIPCC support for this version of MiniFMM)
-endif
+# ARCH=sm_70
+ARCH=gfx908
 
-ARCH=sm_70
-
-CFLAGS_HIPCC=-std=c++11 -O3 -x cu -Xcompiler -fopenmp -arch=$(ARCH)
+CFLAGS_NVCC=-std=c++11 -O3 -Xcompiler -fopenmp -arch=$(ARCH)
+CFLAGS_AMD=-std=c++11 -O3 -Xcompiler -fopenmp --offload-arch=$(ARCH)
 CFLAGS=$(CFLAGS_$(COMPILER))
 
 LIBS=-Xcompiler -fopenmp
